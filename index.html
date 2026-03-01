@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Piano Pals — Kids Piano Learning App</title>
+
+  <!-- Preconnect for Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <!-- Skip to content -->
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <!-- ======================== HOME SCREEN ======================== -->
+  <section id="screen-home" class="screen active" role="main">
+    <div class="midi-status" id="midi-status-home">
+      <span class="midi-dot" id="midi-dot"></span>
+      <span class="midi-text" id="midi-text">Tap the microphone button below</span>
+    </div>
+
+    <div class="home-content" id="main-content">
+      <div class="home-title-area">
+        <div class="title-icon">&#9835;</div>
+        <h1 class="home-title">Piano Pals</h1>
+        <p class="home-subtitle">Let's make music together!</p>
+      </div>
+
+      <!-- Big microphone button — the primary way to connect -->
+      <button class="mic-start-btn" id="mic-start-btn" onclick="startMicrophone()" aria-label="Turn on microphone to listen to your piano">
+        &#127908; Tap to Turn On Microphone
+      </button>
+      <p class="mic-hint">Place the iPad near your piano keyboard, then tap above</p>
+
+      <div class="profile-buttons">
+        <button class="profile-btn profile-little-star" onclick="selectProfile('little-star')" aria-label="Select Little Star profile">
+          <span class="profile-icon">&#11088;</span>
+          <span class="profile-name">Little Star</span>
+          <span class="profile-age">Toddler Mode</span>
+        </button>
+
+        <button class="profile-btn profile-rock-star" onclick="selectProfile('rock-star')" aria-label="Select Rock Star profile">
+          <span class="profile-icon">&#128640;</span>
+          <span class="profile-name">Rock Star</span>
+          <span class="profile-age">Big Kid Mode</span>
+        </button>
+      </div>
+
+      <button class="parent-link" onclick="navigate('parent-settings')" aria-label="Parent Settings">
+        &#9881; Parent Settings
+      </button>
+    </div>
+  </section>
+
+  <!-- ======================== PROFILE MENU ======================== -->
+  <section id="screen-profile-menu" class="screen" role="main">
+    <header class="screen-header">
+      <button class="back-btn" onclick="navigate('home')" aria-label="Back to Home">&#8592; Home</button>
+      <h2 class="screen-title" id="profile-menu-title">Little Star</h2>
+    </header>
+
+    <div class="profile-menu-content">
+      <div class="menu-buttons">
+        <button class="menu-btn menu-free-play" onclick="navigate('free-play')">
+          <span class="menu-btn-icon">&#127928;</span>
+          <span class="menu-btn-label">Free Play</span>
+          <span class="menu-btn-desc">Play any keys you want!</span>
+        </button>
+
+        <button class="menu-btn menu-lessons" onclick="navigate('lesson')">
+          <span class="menu-btn-icon">&#127911;</span>
+          <span class="menu-btn-label">Lessons</span>
+          <span class="menu-btn-desc">Learn fun songs!</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== FREE PLAY MODE ======================== -->
+  <section id="screen-free-play" class="screen" role="main">
+    <header class="screen-header">
+      <button class="back-btn" onclick="navigate('profile-menu')" aria-label="Back">&#8592; Back</button>
+      <h2 class="screen-title">Free Play</h2>
+      <div class="midi-status-small">
+        <span class="midi-dot-small" id="midi-dot-fp"></span>
+      </div>
+    </header>
+
+    <div class="free-play-area">
+      <div class="note-display" id="note-display">
+        <div class="note-display-inner" id="note-display-inner">
+          <span class="note-emoji" id="note-emoji"></span>
+          <span class="note-letter" id="note-letter" style="color: #BBBBBB;">Press a key!</span>
+        </div>
+      </div>
+
+      <div class="particle-container" id="particle-container"></div>
+
+      <div class="piano-container" id="piano-free-play">
+        <!-- Piano keys rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== LESSON MODE — Song Selection ======================== -->
+  <section id="screen-lesson" class="screen" role="main">
+    <header class="screen-header">
+      <button class="back-btn" onclick="navigate('profile-menu')" aria-label="Back">&#8592; Back</button>
+      <h2 class="screen-title">Pick a Song!</h2>
+    </header>
+
+    <div class="song-list" id="song-list">
+      <!-- Song cards rendered by JS -->
+    </div>
+  </section>
+
+  <!-- ======================== LESSON MODE — Playing ======================== -->
+  <section id="screen-lesson-play" class="screen" role="main">
+    <header class="screen-header">
+      <button class="back-btn" onclick="exitLesson()" aria-label="Back to Songs">&#8592; Songs</button>
+      <h2 class="screen-title" id="lesson-song-title">Song Title</h2>
+      <div class="lesson-stats" id="lesson-stats">
+        <span class="stat-score" id="stat-score">Score: 0%</span>
+        <span class="stat-streak" id="stat-streak">&#128293; 0</span>
+      </div>
+    </header>
+
+    <div class="lesson-play-area">
+      <div class="note-guide-container">
+        <div class="hit-zone" id="hit-zone"></div>
+        <div class="note-track" id="note-track">
+          <!-- Scrolling notes rendered by JS -->
+        </div>
+      </div>
+
+      <div class="lesson-feedback" id="lesson-feedback"></div>
+
+      <div class="particle-container" id="lesson-particle-container"></div>
+
+      <div class="piano-container" id="piano-lesson">
+        <!-- Piano keys rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== LESSON COMPLETE ======================== -->
+  <section id="screen-lesson-complete" class="screen" role="main">
+    <div class="lesson-complete-content">
+      <div class="confetti-container" id="confetti-container"></div>
+      <div class="complete-message" id="complete-message">
+        <h2 class="complete-title" id="complete-title">Amazing!</h2>
+        <div class="complete-stars" id="complete-stars"></div>
+        <p class="complete-score" id="complete-score"></p>
+        <p class="complete-encouragement" id="complete-encouragement">You're a superstar!</p>
+        <div class="complete-buttons">
+          <button class="btn-primary" onclick="replayLesson()">&#128260; Play Again</button>
+          <button class="btn-secondary" onclick="navigate('lesson')">&#127911; Back to Songs</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== PARENT SETTINGS ======================== -->
+  <section id="screen-parent-settings" class="screen" role="main">
+    <header class="screen-header">
+      <button class="back-btn" onclick="navigate('home')" aria-label="Back to Home">&#8592; Home</button>
+      <h2 class="screen-title">Parent Settings</h2>
+    </header>
+
+    <div class="settings-content">
+      <!-- Little Star Settings -->
+      <div class="settings-card">
+        <h3 class="settings-card-title">&#11088; Little Star</h3>
+
+        <div class="setting-row">
+          <label class="setting-label">Mode</label>
+          <div class="toggle-group" id="mode-toggle-little-star">
+            <button class="toggle-btn active" data-value="toddler" onclick="setMode('little-star','toddler')">Toddler</button>
+            <button class="toggle-btn" data-value="older" onclick="setMode('little-star','older')">Older Kid</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label class="setting-label" for="diff-little-star">Difficulty</label>
+          <div class="difficulty-slider-wrap">
+            <input type="range" id="diff-little-star" min="0" max="2" value="0" class="difficulty-slider" oninput="setDifficulty('little-star', this.value)">
+            <div class="difficulty-labels">
+              <span>Easy</span><span>Medium</span><span>Hard</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label class="setting-label">Unlock Songs</label>
+          <div class="song-checkboxes" id="songs-little-star">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <button class="btn-danger" onclick="resetProgress('little-star')">Reset Progress</button>
+      </div>
+
+      <!-- Rock Star Settings -->
+      <div class="settings-card">
+        <h3 class="settings-card-title">&#128640; Rock Star</h3>
+
+        <div class="setting-row">
+          <label class="setting-label">Mode</label>
+          <div class="toggle-group" id="mode-toggle-rock-star">
+            <button class="toggle-btn" data-value="toddler" onclick="setMode('rock-star','toddler')">Toddler</button>
+            <button class="toggle-btn active" data-value="older" onclick="setMode('rock-star','older')">Older Kid</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label class="setting-label" for="diff-rock-star">Difficulty</label>
+          <div class="difficulty-slider-wrap">
+            <input type="range" id="diff-rock-star" min="0" max="2" value="1" class="difficulty-slider" oninput="setDifficulty('rock-star', this.value)">
+            <div class="difficulty-labels">
+              <span>Easy</span><span>Medium</span><span>Hard</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label class="setting-label">Unlock Songs</label>
+          <div class="song-checkboxes" id="songs-rock-star">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <button class="btn-danger" onclick="resetProgress('rock-star')">Reset Progress</button>
+      </div>
+
+      <!-- Global Settings -->
+      <div class="settings-card">
+        <h3 class="settings-card-title">&#9881; General</h3>
+
+        <div class="setting-row">
+          <label class="setting-label">How to connect your keyboard</label>
+          <div class="toggle-group" id="input-mode-toggle">
+            <button class="toggle-btn active" data-value="mic" onclick="setInputMode('mic')">&#127908; Microphone</button>
+            <button class="toggle-btn" data-value="midi" onclick="setInputMode('midi')">&#127929; USB/MIDI Cable</button>
+          </div>
+          <p class="setting-hint" id="input-mode-hint">Microphone: just place the iPad near your keyboard. No cables needed.</p>
+        </div>
+
+        <div class="setting-row">
+          <label class="setting-label" for="midi-select">MIDI Device</label>
+          <select id="midi-select" class="setting-select" onchange="selectMidiDevice(this.value)">
+            <option value="">No MIDI device</option>
+          </select>
+        </div>
+
+        <div class="setting-row">
+          <label class="setting-label" for="volume-slider">Volume</label>
+          <div class="volume-slider-wrap">
+            <span class="volume-icon">&#128264;</span>
+            <input type="range" id="volume-slider" min="0" max="100" value="70" class="volume-slider" oninput="setVolume(this.value)">
+            <span class="volume-icon">&#128266;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="./app.js"></script>
+</body>
+</html>
